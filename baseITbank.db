@@ -1,0 +1,32 @@
+CREATE TABLE tipoCliente(
+    tipo_cli VARCHAR(20) PRIMARY KEY,
+    CONSTRAINT tipo_cli CHECK (tipo_cli IN ('Classic', 'Gold', 'Black'))
+)
+INSERT INTO tipoCliente (tipo_cli) VALUES ('Classic'), ('Gold'), ('Black');
+
+CREATE TABLE tipoCuenta(
+    tipo_cuen VARCHAR(20) PRIMARY KEY
+    CONSTRAINT tipo_cuen CHECK (tipo_cuen IN ('CCDolares', 'CCPesos','CADolares', 'CAPesos','CuentaInversion'))
+)
+INSERT INTO tipoCuenta (tipo_cuen) VALUES ('CCDolares'), ('CCPesos'), ('CADolares'), ('CAPesos'), ('CuentaInversion');
+
+CREATE TABLE marcaTarjeta(
+    marca VARCHAR(20) PRIMARY KEY,
+    CONSTRAINT marca CHECK (marca IN ('MASTER', 'VISA','Amex'))
+)
+INSERT INTO marcaTarjeta (marca) VALUES ('MASTER'), ('VISA'), ('Amex');
+
+
+CREATE TABLE tarjeta (
+    numero VARCHAR(20) PRIMARY KEY,
+    CVV VARCHAR(3),
+    tipo VARCHAR(10),
+	marca VARCHAR(20),
+    fechaOtorgamiento DATE,
+    fechaExpiracion DATE,
+	customer_id INTEGER,
+    CONSTRAINT tipo CHECK (Tipo IN ('Credito', 'Debito')),
+	CONSTRAINT FK_Tarjeta_MarcaTarjeta FOREIGN KEY (marca) REFERENCES marcaTarjeta(marca),
+	CONSTRAINT FK_cliente FOREIGN KEY (customer_id) REFERENCES cliente(customer_id)
+);
+
