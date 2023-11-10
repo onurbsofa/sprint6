@@ -1,23 +1,32 @@
 import sqlite3
 import random
 from faker import Faker
+import csv
 
 
 conn = sqlite3.connect('itbank.db')
 c = conn.cursor()
 
-c.execute("ALTER TABLE cuenta ADD tipo_cuen VARCHAR(20) ADD FOREIGN KEY (tipo_cuen) REFERENCES tipoCuenta(tipo_cuen);")
-#no funca nose porque
+with open('./data_cuentas.csv', 'r') as file:
+    csv_reader = csv.reader(file)
+    next(csv_reader)  # Skip the header row
+    for row in csv_reader:
+        # Assuming the CSV columns match the table columns in the same order
+        account_id, customer_id, balance, iban, tipo_cuenta = row
 
+        c.execute("INSERT INTO nueva_cuenta (account_id, customer_id, balance, iban, tipo_cuenta) VALUES (?, ?, ?, ?, ?)",
+                       (account_id, customer_id, balance, iban, tipo_cuenta))
+
+
+# Commit the changes and close the connection
 conn.commit()
 conn.close()
 
-print("Cuenta alterada")
-
+""" 
 tipo_values = ['Credito']
 marca_values = ['MASTER', 'VISA', 'Amex']
 
-fake = Faker()
+fake = Faker() """
 
 """ insertar 500 terjetas de credito asociadolas a los clientes
 for _ in range(500):

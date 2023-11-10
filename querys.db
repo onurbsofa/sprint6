@@ -30,3 +30,11 @@ CREATE TABLE tarjeta (
 	CONSTRAINT FK_cliente FOREIGN KEY (customer_id) REFERENCES cliente(customer_id)
 );
 
+CREATE TABLE nueva_cuenta (
+	account_id INTEGER  PRIMARY KEY,
+    customer_id INTEGER,
+    balance INTEGER,
+    iban TEXT,
+    tipo_cuenta VARCHAR(20),
+    CONSTRAINT FK_cuenta_tipoCuenta FOREIGN KEY (tipo_cuenta) REFERENCES tipoCuenta(tipo_cuen),
+    CONSTRAINT FK_cuenta_cliente FOREIGN KEY (customer_id) REFERENCES cliente(customer_id)
