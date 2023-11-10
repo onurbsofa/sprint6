@@ -16,7 +16,6 @@ CREATE TABLE marcaTarjeta(
 )
 INSERT INTO marcaTarjeta (marca) VALUES ('MASTER'), ('VISA'), ('Amex');
 
-
 CREATE TABLE tarjeta (
     numero VARCHAR(20) PRIMARY KEY,
     CVV VARCHAR(3),
@@ -29,4 +28,29 @@ CREATE TABLE tarjeta (
 	CONSTRAINT FK_Tarjeta_MarcaTarjeta FOREIGN KEY (marca) REFERENCES marcaTarjeta(marca),
 	CONSTRAINT FK_cliente FOREIGN KEY (customer_id) REFERENCES cliente(customer_id)
 );
+
+ALTER TABLE cuenta 
+	ADD COLUMN tipo VARCHAR(20);
+ALTER TABLE cuenta 
+	ADD CONSTRAINT fk_cuenta_tipoCuenta FOREIGN KEY tipo REFERENCES tipoCuenta;
+
+CREATE FUNCTION random_column1 --POR ALGUN MOTIVO NO FUNCIONA, REVISAR
+AS
+BEGIN
+    RETURN (SELECT
+        tipo_cuen
+    FROM
+        tipoCuenta
+    ORDER BY
+        random()
+    LIMIT
+        1 )
+END;
+
+UPDATE cuenta
+	SET tipo = random_column1
+	
+UPDATE empleado SET employee_hire_date = substr(employee_hire_date, 7, 4) || '-' || substr(employee_hire_date, 4, 2) || '-' || substr(employee_hire_date, 1, 2);
+
+
 
