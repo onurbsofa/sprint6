@@ -1,7 +1,8 @@
+--DROP VIEW vista_cliente
 CREATE VIEW vista_cliente AS
 SELECT 
     c.customer_id AS id,
-    s.branch_number AS "numero sucursal",
+    s.branch_number AS numero_sucursal,
     c.customer_name AS nombre,
     c.customer_surname AS apellido,
     c.customer_DNI AS DNI,
