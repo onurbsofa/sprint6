@@ -37,28 +37,24 @@ CREATE TABLE nueva_cuenta (
     tipo_cuenta VARCHAR(20),
     CONSTRAINT FK_cuenta_tipoCuenta FOREIGN KEY (tipo_cuenta) REFERENCES tipoCuenta(tipo_cuen),
     CONSTRAINT FK_cuenta_cliente FOREIGN KEY (customer_id) REFERENCES cliente(customer_id)
-ALTER TABLE cuenta 
-	ADD COLUMN tipo VARCHAR(20);
-ALTER TABLE cuenta 
-	ADD CONSTRAINT fk_cuenta_tipoCuenta FOREIGN KEY tipo REFERENCES tipoCuenta;
+	
+ALTER TABLE cuenta ADD COLUMN tipo VARCHAR(20);
+
+ALTER TABLE cuenta ADD CONSTRAINT fk_cuenta_tipoCuenta FOREIGN KEY (tipo) REFERENCES tipoCuenta(tipo);
 
 
-CREATE FUNCTION random_column1 --POR ALGUN MOTIVO NO FUNCIONA, REVISAR
-AS
+CREATE FUNCTION random_column1() RETURNS TEXT --POR ALGUN MOTIVO NO FUNCIONA, REVISAR
 BEGIN
-    RETURN (SELECT
-        tipo_cuen
-    FROM
-        tipoCuenta
-    ORDER BY
-        random()
-    LIMIT
-        1 )
+    DECLARE tipo_cuenta TEXT;
+    SET tipo_cuenta = (
+        SELECT tipo_cuen
+        FROM tipoCuenta
+        ORDER BY random()
+        LIMIT 1
+    );
+    RETURN tipo_cuenta;
 END;
 
-UPDATE cuenta
-	SET tipo = random_column1
-	
 UPDATE empleado SET employee_hire_date = substr(employee_hire_date, 7, 4) || '-' || substr(employee_hire_date, 4, 2) || '-' || substr(employee_hire_date, 1, 2);
 
 
