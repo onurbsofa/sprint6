@@ -91,6 +91,36 @@ WHERE account_id IN (10,11,12,13,14)
 CREATE UNIQUE INDEX indiceDNICliente ON cliente (customer_DNI);
 
 --Crear la tabla “movimientos” con los campos de identificación del movimiento, número de cuenta, monto, tipo de operación y hora
+	CREATE TABLE movimientos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    numero_cuenta INTEGER,
+    monto REAL,
+    tipo_operacion TEXT,
+    hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	);
 	--Mediante el uso de transacciones, hacer una transferencia de 1000$ desde la cuenta 200 a la cuenta 400
 	--Registrar el movimiento en la tabla movimientos
 	--En caso de no poder realizar la operación de forma completa, realizar un ROLLBACK
+	-- Iniciar la transacción
+BEGIN TRANSACTION;
+
+-- Intentar realizar la transferencia
+UPDATE cuentas
+SET balance = balance - 1000
+WHERE account_id = 200;
+
+UPDATE cuentas
+SET balance = balance + 1000
+WHERE account_id = 400;
+
+-- Registrar el movimiento en la tabla movimientos
+INSERT INTO movimientos (numero_cuenta, monto, tipo_operacion)
+VALUES (200, -1000, 'TRANSFERENCIA SALIENTE');
+
+INSERT INTO movimientos (numero_cuenta, monto, tipo_operacion)
+VALUES (400, 1000, 'TRANSFERENCIA ENTRANTE');
+
+END
+-- Verificar si la transferencia se realizó correctamente
+-- Si hay algún problema, realizar un ROLLBACK
+ROLLBACK;
